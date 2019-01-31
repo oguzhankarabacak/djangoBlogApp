@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% if articles %}
+<div class="col-md-10 offset-md-3">
+<div class="col-lg-8"><h1 class="display-4 font-italic">Makaleler</h1></div>
+<hr>
+<form>
+{% csrf_token %}
+<input type="text" name="keyword" class="input-sm" maxlength="64" placeholder="Search">
+<button type="submit" class="btn btn-primary ">Search</button>
+</form>
+
+{% for article in articles  %}
+<div class="row">
+
+        <!-- Post Content Column -->
+        <div class="col-lg-8">
+
+          <!-- Title -->
+          <a href="{% url 'article:detail' article.id %}"><h2 class="mt-4">{{article.title}}</h2></a>
+
+          <!-- Author -->
+          <p class="lead">
+            by
+            <a>{{article.author.username}}</a>
+          </p>
+
+          
+
+          <!-- Date/Time -->
+          <p>{{article.created_date}}</p>
+
+          <hr>
+
+          <!-- Preview Image -->
+          {% if article.article_image %}
+          <img class="img-fluid rounded" src="{{article.article_image.url}}" alt="">
+          
+          
+          {% endif %}
+        
+          
+          <p>
+          {{article.content|safe|truncatewords:30}}
+          </p>
+                    <a href="{% url 'article:detail' article.id %}" class="btn btn-danger" style="float:right;">Devamını Oku</a>
+
+          
+          
+         
+         <hr>
+          
+
+          
+
+        </div>
+
+      </div>
+      
+
+{% endfor %}
+
+{% else %}
+<div class="alert alert-danger">Makale Bulunmamaktadır</div>
+{% endif %}
+
+</div>
+
+
+{% endblock body %}
